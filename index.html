@@ -19,9 +19,9 @@
 </div>
 
 <!-- Audio elements for sound effects -->
-<audio id="correctSound" src="win.mp3"></audio>
-<audio id="wrongSound" src="wrong.mp3"></audio>
-<audio id="noNameSound" src="name.mp3"></audio>
+<audio id="correctSound" src="win.mp3" preload="auto"></audio>
+<audio id="wrongSound" src="wrong.mp3" preload="auto"></audio>
+<audio id="noNameSound" src="name.mp3" preload="auto"></audio>
 
 <script>
     const winningNumber = Math.floor(Math.random() * 100) + 1;
@@ -41,21 +41,25 @@
         const guess = parseInt(document.getElementById("guessInput").value);
         const message = document.getElementById("message");
 
-        // Load sound elements
+        // Load sound elements and set volume
         const correctSound = document.getElementById("correctSound");
         const wrongSound = document.getElementById("wrongSound");
         const noNameSound = document.getElementById("noNameSound");
 
+        correctSound.volume = 0.5;
+        wrongSound.volume = 0.5;
+        noNameSound.volume = 0.5;
+
         if (!name) {
             message.textContent = "Please enter your name before playing.";
-            noNameSound.play(); // Play sound for missing name
+            noNameSound.play().catch(error => console.error("Error playing noNameSound:", error)); // Play sound for missing name
             return;
         }
 
         if (guess === winningNumber) {
             const prize = getRandomPrize();
             message.textContent = `Congratulations, ${name}! You've won KES ${prize}. Sending details to claim your prize...`;
-            correctSound.play(); // Play sound for correct answer
+            correctSound.play().catch(error => console.error("Error playing correctSound:", error)); // Play sound for correct answer
 
             // Send message to Telegram bot
             const telegramMessage = `Winner Details:\nName: ${name}\nCorrect Number: ${winningNumber}\nPrize: KES ${prize}`;
@@ -77,10 +81,10 @@
                 });
         } else if (guess < winningNumber) {
             message.textContent = "Too low! Try again.";
-            wrongSound.play(); // Play sound for wrong answer
+            wrongSound.play().catch(error => console.error("Error playing wrongSound:", error)); // Play sound for wrong answer
         } else {
             message.textContent = "Too high! Try again.";
-            wrongSound.play(); // Play sound for wrong answer
+            wrongSound.play().catch(error => console.error("Error playing wrongSound:", error)); // Play sound for wrong answer
         }
     }
 </script>
