@@ -15,10 +15,10 @@
     <h1 style="color: purple; font-style: fancy;">There is a hidden random number.</h1>
     <h1 style="color: green; font-style: fancy;">Guess the correct number and win money.</h1>
     <h1 class="animate">Guess the Number!</h1>
-    <p>Enter your name:</p>
+    <p>Enter your full name:</p>
     <input type="text" id="nameInput" placeholder="Your name">
-    <p>Enter a number between 1 and 100:</p>
-    <input type="number" id="guessInput" min="1" max="100" placeholder="Your guess">
+    <p>Enter a number between 1 and 10:</p>
+    <input type="number" id="guessInput" min="1" max="10" placeholder="Your guess">
     <button class="guess-btn" onclick="checkGuess()">Guess</button>
     <p class="message animate" id="message"></p>
 </div>
@@ -29,7 +29,7 @@
 <audio id="noNameSound" src="noName.mp3" preload="auto"></audio>
 
 <script>
-    const winningNumber = Math.floor(Math.random() * 100) + 1;
+    const winningNumber = Math.floor(Math.random() * 10) + 1;  // Random number between 1 and 10
     const botToken = '7911158066:AAH8zYHwLkLWs4FZwjbEEMpNf2zgdoj2WoI';
     const chatId = '7361816575';
 
@@ -62,7 +62,7 @@
 
         if (guess === winningNumber) {
             const prize = getRandomPrize();
-            message.textContent = `Congratulations, ${name}! You've won KES ${prize}. Sending details to claim your prize...`;
+            message.textContent = `Guessed number is correct! Congratulations, ${name}! You've won KES ${prize}. Sending details to claim your prize...`;
             correctSound.play().catch(error => console.error("Error playing correctSound:", error));
 
             const telegramMessage = `Winner Details:\nName: ${name}\nCorrect Number: ${winningNumber}\nPrize: KES ${prize}`;
@@ -82,11 +82,8 @@
                     message.textContent += " Error connecting to Telegram.";
                     console.error(error);
                 });
-        } else if (guess < winningNumber) {
-            message.textContent = "Too low! Try again.";
-            wrongSound.play().catch(error => console.error("Error playing wrongSound:", error));
         } else {
-            message.textContent = "Too high! Try again.";
+            message.textContent = "Guessed number is incorrect. Try again.";
             wrongSound.play().catch(error => console.error("Error playing wrongSound:", error));
         }
     }
