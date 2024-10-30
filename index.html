@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Guessing Game</title>
+    <style>
+        /* CSS remains the same as before */
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Guess the Number!</h1>
+    <p>Enter your name:</p>
+    <input type="text" id="nameInput" placeholder="Your name">
+    <p>Enter a number between 1 and 100:</p>
+    <input type="number" id="guessInput" min="1" max="100" placeholder="Your guess">
+    <button onclick="checkGuess()">Guess</button>
+    <p class="message" id="message"></p>
+</div>
+
+<script>
+    const winningNumber = Math.floor(Math.random() * 100) + 1;
+    const botToken = 'YOUR_TELEGRAM_BOT_TOKEN';
+    const chatId = 'YOUR_TELEGRAM_CHAT_ID';  // Replace with the chat ID to receive messages
+
+    function getRandomPrize() {
+        let prize;
+        do {
+            prize = Math.floor(Math.random() * 91) + 10; // Generates a number between 10 and 100
+        } while (prize === 100); // Makes it hard to get exactly 100
+        return prize;
+    }
+
+    function checkGuess() {
+        const name = document.getElementById("nameInput").value.trim();
+        const guess = parseInt(document.getElementById("guessInput").value);
+        const message = document.getElementById("message");
+
+        if (!name) {
+            message.textContent = "Please enter your name before playing.";
+            return;
+        }
+
+        if (guess === winningNumber) {
+            const prize = getRandomPrize();
+            message.textContent = `Congratulations, ${name}! You've won KES ${prize}. Sending details to claim your prize...`;
+
+            // Send message to Telegram bot
+            const telegramMessage = `Winner Details:\nName: ${name}\nCorrect Number: ${winningNumber}\nPrize: KES ${prize}`;
+            fetch(`https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(telegramMessage)}`)
+                .then(response => {
+                    if (response.ok) {
+                        message.textContent += " Details sent successfully!";
+                    } else {
+                        message.textContent += " Error sending details. Please try again.";
+                    }
+                })
+                .catch(error => {
+                    message.textContent += " Error connecting to Telegram.";
+                    console.error(error);
+                });
+        } else if (guess < winningNumber) {
+            message.textContent = "Too low! Try again.";
+        } else {
+            message.textContent = "Too high! Try again.";
+        }
+    }
+</script>
+
+</body>
+</html>
