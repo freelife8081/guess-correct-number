@@ -31,61 +31,65 @@
 
 <script>
     const winningNumber = Math.floor(Math.random() * 10) + 1;  // Random number between 1 and 10
-    const botToken = '7911158066:AAH8zYHwLkLWs4FZwjbEEMpNf2zgdoj2WoI';
-    const chatId = '7361816575';
+const botToken = 'YOUR_TELEGRAM_BOT_TOKEN';
+const chatId = 'YOUR_TELEGRAM_CHAT_ID';
 
-    function getRandomPrize() {
-        let prize;
-        do {
-            prize = Math.floor(Math.random() * 91) + 10;
-        } while (prize === 100);
-        return prize;
+function getRandomPrize() {
+    let prize;
+    do {
+        prize = Math.floor(Math.random() * 91) + 10;
+    } while (prize === 100);
+    return prize;
+}
+
+function checkGuess() {
+    const name = document.getElementById("nameInput").value.trim();
+    const guess = parseInt(document.getElementById("guessInput").value);
+    const message = document.getElementById("message");
+
+    const correctSound = document.getElementById("correctSound");
+    const wrongSound = document.getElementById("wrongSound");
+    const noNameSound = document.getElementById("noNameSound");
+
+    correctSound.volume = 0.5;
+    wrongSound.volume = 0.5;
+    noNameSound.volume = 0.5;
+
+    if (!name) {
+        message.textContent = "Please enter your name before playing.";
+        noNameSound.play().catch(error => console.error("Error playing noNameSound:", error));
+        return;
     }
 
-    function checkGuess() {
-        const name = document.getElementById("nameInput").value.trim();
-        const guess = parseInt(document.getElementById("guessInput").value);
-        const message = document.getElementById("message");
+    if (guess === winningNumber) {
+        const prize = getRandomPrize();
+        message.textContent = `Guessed number is correct! Congratulations, ${name}! You've won KES ${prize}. Sending details to claim your prize...`;
+        correctSound.play().catch(error => console.error("Error playing correctSound:", error));
 
-        const correctSound = document.getElementById("correctSound");
-        const wrongSound = document.getElementById("wrongSound");
-        const noNameSound = document.getElementById("noNameSound");
+        const telegramMessage = `Winner Details:\nName: ${name}\nCorrect Number: ${winningNumber}\nPrize: KES ${prize}`;
+        fetch(`https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(telegramMessage)}`)
+            .then(response => {
+                if (response.ok) {
+                    message.textContent += " Details sent successfully! Redirecting to WhatsApp...";
+                    setTimeout(() => {
+                        const whatsappURL = `https://wa.me/254791190745?text=I+guessed+the+correct+number!+Prize:+KES+${prize}+for+${name}`;
+                        window.location.href = whatsappURL;
 
-        correctSound.volume = 0.5;
-        wrongSound.volume = 0.5;
-        noNameSound.volume = 0.5;
-
-        if (!name) {
-            message.textContent = "Please enter your name before playing.";
-            noNameSound.play().catch(error => console.error("Error playing noNameSound:", error));
-            return;
-        }
-
-        if (guess === winningNumber) {
-    const prize = getRandomPrize();
-    message.textContent = `Guessed number is correct! Congratulations, ${name}! You've won KES ${prize}. Sending details to claim your prize...`;
-    correctSound.play().catch(error => console.error("Error playing correctSound:", error));
-
-    const telegramMessage = `Winner Details:\nName: ${name}\nCorrect Number: ${winningNumber}\nPrize: KES ${prize}`;
-    fetch(`https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(telegramMessage)}`)
-        .then(response => {
-            if (response.ok) {
-                message.textContent += " Details sent successfully! Redirecting to WhatsApp...";
-                setTimeout(() => {
-                    const whatsappURL = `https://wa.me/254791190745?text=I+guessed+the+correct+number!+Prize:+KES+${prize}+for+${name}`;
-                    window.location.href = whatsappURL;
-                    
-                    // Reload the page after redirect
-                    setTimeout(() => location.reload(), 3000); // Adjust timing if needed
-                }, 2000);
-            } else {
-                message.textContent += " Error sending details. Please try again.";
-            }
-        })
-        .catch(error => {
-            message.textContent += " Error connecting to Telegram.";
-            console.error(error);
-        });
+                        // Reload the page after redirect
+                        setTimeout(() => location.reload(), 3000); // Adjust timing if needed
+                    }, 2000);
+                } else {
+                    message.textContent += " Error sending details. Please try again.";
+                }
+            })
+            .catch(error => {
+                message.textContent += " Error connecting to Telegram.";
+                console.error(error);
+            });
+    } else {
+        message.textContent = "Guessed number is incorrect. Try again.";
+        wrongSound.play().catch(error => console.error("Error playing wrongSound:", error));
+    }
 }
 
 </script>
