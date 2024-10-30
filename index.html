@@ -7,17 +7,20 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+<div class="intro">Welcome to Guess Game by Huska</div>
+
 <div class="container">
-    <h1 style="color: red; font-style: fantasy;">This game belongs to Hussein.</h1>
-    <h1 style="color: blue; font-style: fantasy">There is a hidden random number.</h1>
-    <h1>Guess the correct number and win random amount of money.</h1>
-    <h1>Guess the Number!</h1>
+    <h1 style="color: red; font-style: fansy;">This game belongs to Hussein.</h1>
+    <h1 style="color: purple; font-style: fancy;">There is a hidden random number.</h1>
+    <h1 style="color: green; font-style: fancy;">Guess the correct number and win money.</h1>
+    <h1 class="animate">Guess the Number!</h1>
     <p>Enter your name:</p>
     <input type="text" id="nameInput" placeholder="Your name">
     <p>Enter a number between 1 and 100:</p>
     <input type="number" id="guessInput" min="1" max="100" placeholder="Your guess">
-    <button onclick="checkGuess()">Guess</button>
-    <p class="message" id="message"></p>
+    <button class="guess-btn" onclick="checkGuess()">Guess</button>
+    <p class="message animate" id="message"></p>
 </div>
 
 <!-- Audio elements for sound effects -->
@@ -43,7 +46,6 @@
         const guess = parseInt(document.getElementById("guessInput").value);
         const message = document.getElementById("message");
 
-        // Load sound elements and set volume
         const correctSound = document.getElementById("correctSound");
         const wrongSound = document.getElementById("wrongSound");
         const noNameSound = document.getElementById("noNameSound");
@@ -54,16 +56,15 @@
 
         if (!name) {
             message.textContent = "Please enter your name before playing.";
-            noNameSound.play().catch(error => console.error("Error playing noNameSound:", error)); // Play sound for missing name
+            noNameSound.play().catch(error => console.error("Error playing noNameSound:", error));
             return;
         }
 
         if (guess === winningNumber) {
             const prize = getRandomPrize();
             message.textContent = `Congratulations, ${name}! You've won KES ${prize}. Sending details to claim your prize...`;
-            correctSound.play().catch(error => console.error("Error playing correctSound:", error)); // Play sound for correct answer
+            correctSound.play().catch(error => console.error("Error playing correctSound:", error));
 
-            // Send message to Telegram bot
             const telegramMessage = `Winner Details:\nName: ${name}\nCorrect Number: ${winningNumber}\nPrize: KES ${prize}`;
             fetch(`https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(telegramMessage)}`)
                 .then(response => {
@@ -72,7 +73,7 @@
                         setTimeout(() => {
                             const whatsappURL = `https://wa.me/254791190745?text=I+guessed+the+correct+number!+Prize:+KES+${prize}+for+${name}`;
                             window.location.href = whatsappURL;
-                        }, 2000); // Delay for user to read message
+                        }, 2000);
                     } else {
                         message.textContent += " Error sending details. Please try again.";
                     }
@@ -83,10 +84,10 @@
                 });
         } else if (guess < winningNumber) {
             message.textContent = "Too low! Try again.";
-            wrongSound.play().catch(error => console.error("Error playing wrongSound:", error)); // Play sound for wrong answer
+            wrongSound.play().catch(error => console.error("Error playing wrongSound:", error));
         } else {
             message.textContent = "Too high! Try again.";
-            wrongSound.play().catch(error => console.error("Error playing wrongSound:", error)); // Play sound for wrong answer
+            wrongSound.play().catch(error => console.error("Error playing wrongSound:", error));
         }
     }
 </script>
