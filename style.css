@@ -1,45 +1,67 @@
+/* General styles */
 body {
     font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
+    justify-content: center;
     height: 100vh;
     margin: 0;
-    background-color: #f0f0f0;
+    padding: 0;
 }
 
+/* Intro animation */
+.intro {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    animation: fadeIn 3s ease-in-out;
+    color: #333;
+}
+
+/* Container styles */
 .container {
-    text-align: center;
-    background: white;
+    background-color: #ffffff;
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    animation: slideIn 1s ease-out;
 }
 
-input[type="text"],
-input[type="number"] {
-    padding: 8px;
-    width: 100px;
-    margin: 10px 0;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-}
-
-button {
+/* Button animation */
+.guess-btn {
     padding: 10px 20px;
+    font-size: 16px;
+    color: #ffffff;
     background-color: #007bff;
-    color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
-button:hover {
+.guess-btn:hover {
     background-color: #0056b3;
 }
 
+/* Message animation */
 .message {
-    margin-top: 10px;
-    font-weight: bold;
-    color: #333;
+    margin-top: 15px;
+    font-size: 18px;
+    color: #444;
+    animation: fadeIn 0.5s ease;
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Slide-in animation */
+@keyframes slideIn {
+    from { transform: translateY(-30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
 }
