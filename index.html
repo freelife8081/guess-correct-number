@@ -7,8 +7,12 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
+<div>
+    <h1 style="color: red; font-style: fantasy;">This game belongs to Hussein.</h1>
+</div>
 <div class="container">
+    <h1 style="color: blue; font-style: fantasy">There is a hidden random number.</h1>
+    <h1>Guess the correct number and win random amount of money.</h1>
     <h1>Guess the Number!</h1>
     <p>Enter your name:</p>
     <input type="text" id="nameInput" placeholder="Your name">
@@ -19,9 +23,9 @@
 </div>
 
 <!-- Audio elements for sound effects -->
-<audio id="correctSound" src="win.mp3" preload="auto"></audio>
+<audio id="correctSound" src="correct.mp3" preload="auto"></audio>
 <audio id="wrongSound" src="wrong.mp3" preload="auto"></audio>
-<audio id="noNameSound" src="name.mp3" preload="auto"></audio>
+<audio id="noNameSound" src="noName.mp3" preload="auto"></audio>
 
 <script>
     const winningNumber = Math.floor(Math.random() * 100) + 1;
